@@ -1,0 +1,125 @@
+<div>
+  <div>
+    <h1>
+      List of photos
+    </h1>
+  </div>
+</div>
+
+
+
+<% if session.fetch(:user_id) != nil %>
+
+<div>
+  <div>
+
+    <form action="/insert_photo" method="post" class="form-horizontal" enctype="multipart/form-data">
+      
+       
+         
+        <label for="browser_input_image">
+          Image
+        </label>
+
+        <input type="file" id="browser_input_image" name="query_image" placeholder="Enter URL for the image..." class="form-control">
+     
+       
+       
+        <label for="caption_box">
+          Caption
+        </label>
+
+        <textarea id="caption_box" name="query_caption" rows="2" placeholder="Enter a caption for the photo"></textarea>
+      
+
+      <button>
+        Add photo
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+<% end %>
+
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          Image
+        </th>
+
+        <th>
+          Caption
+        </th>
+
+        <th>
+          Owner
+        </th>
+
+        <th>
+          Posted
+        </th>
+
+        <th>
+          Likes
+        </th>
+
+        <th>
+          
+        </th>
+
+      </tr>
+
+      <% @list_of_photos.each do |a_photo| %>
+          <% if User.where({:id => a_photo.owner_id}).at(0).private == false %>
+              <tr>
+                <td>
+                  <img src="<%= a_photo.image %>">
+                </td>
+
+                <td>
+                  <%= a_photo.caption %>
+                </td>
+
+                <td>
+                  <%= a_photo.poster.username %>
+                </td>
+
+                <td>
+                  <%= time_ago_in_words(a_photo.created_at) %> ago
+                </td>
+
+                <td>
+                  <%= a_photo.likes_count %>
+                </td>
+
+                <td>
+                  <% if @current_user != nil%>
+                      <% if FollowRequest.where({:sender_id => @current_user.id, :recipient_id => a_photo.owner_id}).first&.status == "accepted" || User.where({:id => a_photo.owner_id}).first&.private == false  %>
+                          <a href="/photos/<%= a_photo.id %>">
+                            Show details
+                          </a>
+                      <%else%>
+                          <a href="/user_not_following">
+                              Show details
+                          </a>
+                      <%end%>
+                  
+                  <%else%>
+                      <a href="/user_sign_in_error_photo">
+                          Show details
+                      </a>
+                    
+                  <%end%>
+                </td>
+              </tr>
+          <%end%>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>
