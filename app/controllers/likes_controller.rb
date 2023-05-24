@@ -2,14 +2,14 @@ class LikesController < ApplicationController
   def index
     @likes = Like.all.order({ :created_at => :desc })
 
-    render({ :template => "likes/index.html.erb" })
+    render({ :template => "likes/index" })
   end
 
   def show
     the_id = params.fetch("path_id")
     @like = Like.where({:id => the_id }).at(0)
 
-    render({ :template => "likes/show.html.erb" })
+    render({ :template => "likes/show" })
   end
 
   def create

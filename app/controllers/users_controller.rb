@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
 
   def new_registration_form
-    render({ :template => "user_sessions/sign_up.html.erb" })
+    render({ :template => "user_sessions/sign_up" })
   end
 
   def create
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   end
     
   def edit_registration_form
-    render({ :template => "users/edit_profile.html.erb" })
+    render({ :template => "users/edit_profile" })
   end
 
   def update
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 
       redirect_to("/", { :notice => "User account updated successfully."})
     else
-      render({ :template => "users/edit_profile_with_errors.html.erb" })
+      render({ :template => "users/edit_profile_with_errors" })
     end
   end
 
@@ -69,22 +69,22 @@ class UsersController < ApplicationController
 
   def index
     @users = User.all.order({ :username => :asc })
-    render({ :template => "users/index.html" })
+    render({ :template => "users/index" })
   end
 
   def show
-    render({ :template => "users/show.html.erb" })
+    render({ :template => "users/show" })
   end
 
   def liked_photos
-    render({ :template => "users/liked_photos.html.erb" })
+    render({ :template => "users/liked_photos" })
   end
 
   def feed
-    render({ :template => "users/feed.html.erb" })
+    render({ :template => "users/feed" })
   end
 
   def discover
-    render({ :template => "users/discover.html.erb" })
+    render({ :template => "users/discover" })
   end
 end

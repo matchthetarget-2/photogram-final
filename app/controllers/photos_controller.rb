@@ -4,14 +4,14 @@ class PhotosController < ApplicationController
   def index
     @photos = Photo.joins(:poster).all.where({ :users => { :private => false } }).order({ :created_at => :desc })
 
-    render({ :template => "photos/index.html.erb" })
+    render({ :template => "photos/index" })
   end
 
   def show
     the_id = params.fetch("path_id")
     @photo = Photo.where({:id => the_id }).at(0)
 
-    render({ :template => "photos/show.html.erb" })
+    render({ :template => "photos/show" })
   end
 
   def create
