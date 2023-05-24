@@ -4,7 +4,7 @@ class UserAuthenticationController < ApplicationController
 
   def sign_in_form
     
-    render({ :template => "user_authentication/sign_in.html.erb" })
+    render({ :template => "user_authentication/sign_in" })
   end
 
   def sign_in_form_error
@@ -50,7 +50,7 @@ class UserAuthenticationController < ApplicationController
   end
 
   def sign_up_form
-    render({ :template => "user_authentication/sign_up.html.erb" })
+    render({ :template => "user_authentication/sign_up" })
   end
 
   def create
@@ -75,7 +75,7 @@ class UserAuthenticationController < ApplicationController
   end
     
   def edit_profile_form
-    render({ :template => "user_authentication/edit_profile.html.erb" })
+    render({ :template => "user_authentication/edit_profile" })
   end
 
   def update
@@ -93,7 +93,7 @@ class UserAuthenticationController < ApplicationController
 
       redirect_to("/", { :notice => "User account updated successfully."})
     else
-      render({ :template => "user_authentication/edit_profile_with_errors.html.erb" , :alert => @user.errors.full_messages.to_sentence })
+      render({ :template => "user_authentication/edit_profile_with_errors" , :alert => @user.errors.full_messages.to_sentence })
     end
   end
 
@@ -107,7 +107,7 @@ class UserAuthenticationController < ApplicationController
   def index
     @users = User.all.order({ :username => :asc })
 
-    render({ :template => "user_authentication/index.html.erb" })
+    render({ :template => "user_authentication/index" })
     
   end
 
@@ -115,7 +115,7 @@ class UserAuthenticationController < ApplicationController
     the_username = params.fetch("the_username")
     @user = User.where({ :username => the_username }).at(0)
 
-    render({ :template => "user_authentication/show.html.erb" })
+    render({ :template => "user_authentication/show" })
   end
 
   def not_following
@@ -137,7 +137,7 @@ class UserAuthenticationController < ApplicationController
 
       redirect_to("/", { :notice => "User account updated successfully."})
     else
-      render({ :template => "user_authentication/edit_profile_with_errors.html.erb" , :alert => @user.errors.full_messages.to_sentence })
+      render({ :template => "user_authentication/edit_profile_with_errors" , :alert => @user.errors.full_messages.to_sentence })
     end
   end
 
@@ -146,14 +146,14 @@ class UserAuthenticationController < ApplicationController
     the_username = params.fetch("the_username")
     @user = User.where({ :username => the_username }).at(0)
 
-    render({ :template => "user_authentication/liked_photos.html.erb" })
+    render({ :template => "user_authentication/liked_photos" })
   end
   
   def feed_show
     the_username = params.fetch("the_username")
     @user = User.where({ :username => the_username }).at(0)
 
-    render({ :template => "user_authentication/feed.html.erb" })
+    render({ :template => "user_authentication/feed" })
   end
 
 end
