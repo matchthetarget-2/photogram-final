@@ -51,9 +51,9 @@
   <% if @photo.owner_id == @current_user.id %>
   <dt>Edit photo</dt>
   <dd>
-    <form action="/modify_photo/<%= @photo.id %>" method="post">
+    <form action="/modify_photo/<%= @photo.id %>" method="post" enctype="multipart/form-data">
       <label for="browser_image">Image URL</label>
-      <input id="browser_image" type="text" name="query_image" placeholder="Enter a URL for the image..." value="<%= @photo.image %>">
+      <input id="browser_image" type="file" name="query_image" placeholder="Enter a URL for the image..." value="<%= @photo.image %>">
     
       <label for="browser_caption">Caption</label>
       <textarea id="browser_caption" name="query_caption" placeholder="Enter a caption for the photo..."><%= @photo.caption %></textarea>
