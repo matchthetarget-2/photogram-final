@@ -112,3 +112,5 @@ end
 
 gem "carrierwave"
 gem "cloudinary"
+
+gem "dockerfile-rails", ">= 1.4", :group => :development

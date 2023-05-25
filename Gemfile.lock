@@ -180,6 +180,8 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.5.0)
     diffy (3.4.2)
+    dockerfile-rails (1.4.0)
+      rails
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.8.1)
@@ -474,6 +476,7 @@ DEPENDENCIES
   cloudinary
   debug
   devise
+  dockerfile-rails (>= 1.4)
   dotenv-rails
   draft_generators!
   draft_matchers!
