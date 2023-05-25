@@ -22,6 +22,6 @@
 if ENV["RAILS_ENV"] == "production"
   every 1.minutes do # 1.minute 1.day 1.week 1.month 1.year is also supported
     # the following tasks are run in parallel (not in sequence)
-    rails sample_data
+    rails "sample_data"
   end
 end
