@@ -19,6 +19,11 @@ require "#{File.expand_path("../support/hint_formatter", __FILE__)}"
 # it.
 #
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require "carrierwave"
+CarrierWave.configure do |config|
+  config.storage = :file
+  config.enable_processing = false
+end
 RSpec.configure do |config|
   config.include RSpecHtmlMatchers
   config.example_status_persistence_file_path = "examples.txt"
