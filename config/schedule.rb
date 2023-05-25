@@ -20,7 +20,7 @@
 # Learn more: http://github.com/javan/whenever
 
 if ENV["RAILS_ENV"] == "production"
-  every 1.hours do # 1.minute 1.day 1.week 1.month 1.year is also supported
+  every 60.minutes do # 1.minute 1.day 1.week 1.month 1.year is also supported
     # the following tasks are run in parallel (not in sequence)
     rake "sample_data"
   end
