@@ -62,6 +62,9 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
+  # cron job for sample_data with whenever
+  gem "whenever", require: false
 end
 
 group :test do
