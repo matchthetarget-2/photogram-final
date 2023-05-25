@@ -2,31 +2,46 @@
 #
 # Table name: photos
 #
-#  id             :bigint           not null, primary key
+#  id             :integer          not null, primary key
 #  caption        :text
-#  comments_count :integer
+#  comments_count :integer          default("0")
 #  image          :string
-#  likes_count    :integer
+#  likes_count    :integer          default("0")
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  owner_id       :integer
 #
 class Photo < ApplicationRecord
+  validates(:poster, { :presence => true })
+  validates(:image, { :presence => true })
+  
+  # def poster
+  #   return User.where({ :id => self.owner_id }).at(0)
+  # end
 
-mount_uploader :image, ImageUploader
+  # def comments
+  #   return Comment.where({ :photo_id => self.id })
+  # end
 
-belongs_to :poster, :foreign_key => "owner_id", :class_name => "User" 
+  # def likes
+  #   return Like.where({ :photo_id => self.id })
+  # end
 
-#has_many :photo_fans, :foreign_key => "photo_id", :class_name => "Photo"
+  # def fans
+  #   array_of_user_ids = self.likes.pluck(:fan_id)
 
-has_many :likes, :foreign_key => "photo_id", :class_name => "Like" 
+  #   return User.where({ :id => array_of_user_ids })
+  # end
 
-has_many(:comments, **{ :class_name => "Comment", :foreign_key => "photo_id", :dependent => :destroy })
+  has_many :comments, :dependent => :destroy
+  has_many :likes, :dependent => :destroy
+  belongs_to :poster, :class_name => "User", :foreign_key => "owner_id"
+  has_many :commenters, :through => :comments, :source => :author
+  has_many :fans, :through => :likes, :source => :fan
+  has_many :viewers, :through => :owner, :source => :leaders
+  has_many :discovering, :through => :fans, :source => :leaders
 
-has_many(:fans, **{ :through => :likes, :source => :user })
-
-has_many(:followers, **{ :through => :owner, :source => :following })
-
-has_many(:fan_followers, **{ :through => :fans, :source => :following })
-
+  def fan_list
+    return fans.pluck(:username).to_sentence
+  end
 end

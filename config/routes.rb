@@ -1,109 +1,69 @@
 Rails.application.routes.draw do
 
-  # Routes for the Like resource:
+  # Routes for the User account:
 
-  # CREATE
-  post("/insert_like", { :controller => "likes", :action => "create" })
-          
-  # READ
-  get("/likes", { :controller => "likes", :action => "index" })
+  # SIGN UP FORM
+  get("/user_sign_up", { :controller => "users", :action => "new_registration_form" })        
+  # CREATE RECORD
+  post("/insert_user", { :controller => "users", :action => "create"  })
+      
+  # EDIT PROFILE FORM        
+  get("/edit_user_profile", { :controller => "users", :action => "edit_registration_form" })       
+  # UPDATE RECORD
+  post("/modify_user", { :controller => "users", :action => "update" })
   
-  get("/likes/:path_id", { :controller => "likes", :action => "show" })
-  
-  # UPDATE
-  
-  post("/modify_like/:path_id", { :controller => "likes", :action => "update" })
-  
-  # DELETE
-  get("/delete_like/:path_id", { :controller => "likes", :action => "destroy" })
+  # DELETE RECORD
+  get("/cancel_user_account", { :controller => "users", :action => "destroy" })
 
-  #------------------------------
+  # ------------------------------
 
-  # Routes for the Follow request resource:
-
-  # CREATE
-  post("/insert_follow_request", { :controller => "follow_requests", :action => "create" })
-          
-  # READ
-  get("/follow_requests", { :controller => "follow_requests", :action => "index" })
+  # SIGN IN FORM
+  get("/user_sign_in", { :controller => "user_sessions", :action => "new_session_form" })
+  # AUTHENTICATE AND STORE COOKIE
+  post("/user_verify_credentials", { :controller => "user_sessions", :action => "create_cookie" })
   
-  get("/follow_requests/:path_id", { :controller => "follow_requests", :action => "show" })
-  
-  # UPDATE
-  
-  post("/modify_follow_request/:path_id", { :controller => "follow_requests", :action => "update" })
-  
-  # DELETE
-  get("/delete_follow_request/:path_id", { :controller => "follow_requests", :action => "destroy" })
-
-  #------------------------------
-
-  # Routes for the Comment resource:
-
-  # CREATE
-  post("/insert_comment", { :controller => "comments", :action => "create" })
-          
-  # READ
-  get("/comments", { :controller => "comments", :action => "index" })
-  
-  get("/comments/:path_id", { :controller => "comments", :action => "show" })
-  
-  # UPDATE
-  
-  post("/modify_comment/:path_id", { :controller => "comments", :action => "update" })
-  
-  # DELETE
-  get("/delete_comment/:path_id", { :controller => "comments", :action => "destroy" })
-
+  # SIGN OUT        
+  get("/user_sign_out", { :controller => "user_sessions", :action => "destroy_cookies" })
+             
   #------------------------------
 
   # Routes for the User account:
 
   # SIGN UP FORM
-  get("/user_sign_up", { :controller => "user_authentication", :action => "sign_up_form" })        
+  get("/user_sign_up", { :controller => "users", :action => "new_registration_form" })        
   # CREATE RECORD
-  post("/insert_user", { :controller => "user_authentication", :action => "create"  })
+  post("/insert_user", { :controller => "users", :action => "create"  })
       
   # EDIT PROFILE FORM        
-  get("/edit_user_profile", { :controller => "user_authentication", :action => "edit_profile_form" })       
+  get("/edit_user_profile", { :controller => "users", :action => "edit_registration_form" })       
   # UPDATE RECORD
-  post("/modify_user", { :controller => "user_authentication", :action => "update_private" })
+  post("/modify_user/:path_id", { :controller => "users", :action => "update" })
   
   # DELETE RECORD
-  get("/cancel_user_account", { :controller => "user_authentication", :action => "destroy" })
-
- # READ
- get("/", { :controller => "user_authentication", :action => "index" })
-
- get("/users", { :controller => "user_authentication", :action => "index" })
-  
- get("/users/:the_username", { :controller => "user_authentication", :action => "show" })
-
- get("/not_following", { :controller => "user_authentication", :action => "not_following" })
-
- get("/users/:the_username/liked_photos", { :controller => "user_authentication", :action => "liked_photos_show" })
-
- get("/users/:the_username/feed", { :controller => "user_authentication", :action => "feed_show" })
+  get("/cancel_user_account", { :controller => "users", :action => "destroy" })
 
   # ------------------------------
 
   # SIGN IN FORM
-  get("/user_sign_in", { :controller => "user_authentication", :action => "sign_in_form" })
-
-  get("/user_sign_in_error", { :controller => "user_authentication", :action => "sign_in_form_error" })
-
-  get("/user_sign_in_error_photo", { :controller => "user_authentication", :action => "sign_in_form_error_photo" })
-
-  get("/user_not_following", { :controller => "user_authentication", :action => "not_folloing_error" })
-
+  get("/user_sign_in", { :controller => "user_sessions", :action => "new_session_form" })
   # AUTHENTICATE AND STORE COOKIE
-  post("/user_verify_credentials", { :controller => "user_authentication", :action => "create_cookie" })
+  post("/user_verify_credentials", { :controller => "user_sessions", :action => "create_cookie" })
   
   # SIGN OUT        
-  get("/user_sign_out", { :controller => "user_authentication", :action => "destroy_cookies" })
+  get("/user_sign_out", { :controller => "user_sessions", :action => "destroy_cookies" })
              
   #------------------------------
 
+
+  # READ
+  get("/", {:controller => "users", :action => "index" })
+  get("/users", {:controller => "users", :action => "index" })
+  get("/users/:path_username", {:controller => "users", :action => "show" })
+  get("/users/:path_username/own_photos", {:controller => "users", :action => "own_photos" })
+  get("/users/:path_username/liked_photos", {:controller => "users", :action => "liked_photos" })
+  get("/users/:path_username/feed", {:controller => "users", :action => "feed" })
+  get("/users/:path_username/discover", {:controller => "users", :action => "discover" })
+  
   # Routes for the Photo resource:
 
   # CREATE
@@ -123,4 +83,29 @@ Rails.application.routes.draw do
 
   #------------------------------
 
+  # Like routes
+
+  # CREATE
+  post("/insert_like", {:controller => "likes", :action => "create" })
+
+  # READ
+  get("/likes", {:controller => "likes", :action => "index" })
+  get("/likes/:path_id", {:controller => "likes", :action => "show" })
+
+  # DELETE
+  get("/delete_like/:path_id", {:controller => "likes", :action => "destroy" })
+  # Comment routes
+
+  # CREATE
+  post("/insert_comment", { :controller => "comments", :action => "create" })
+
+
+  # Follow Request routes
+  post("/insert_follow_request", { :controller => "follow_requests", :action => "create" })
+
+  get("/delete_follow_request/:path_id", { :controller => "follow_requests", :action => "destroy" })
+
+  post("/modify_follow_request/:path_id", { :controller => "follow_requests", :action => "update" })
+
+  # ============
 end

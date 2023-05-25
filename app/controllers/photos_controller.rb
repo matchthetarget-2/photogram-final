@@ -1,66 +1,53 @@
 class PhotosController < ApplicationController
-  def index
-    matching_photos = Photo.all
+  skip_before_action(:force_user_sign_in, { :only => [:index] })
 
-    @list_of_photos = matching_photos.order({ :created_at => :desc })
+  def index
+    @photos = Photo.joins(:poster).all.where({ :users => { :private => false } }).order({ :created_at => :desc })
 
     render({ :template => "photos/index" })
   end
 
   def show
-    
-    if @current_user == nil
-      redirect_to("/user_sign_in", { :notice => "You have to sign in first." })
-    else
     the_id = params.fetch("path_id")
-
-    matching_photos = Photo.where({ :id => the_id })
-
-    @the_photo = matching_photos.at(0)
-
+    @photo = Photo.where({:id => the_id }).at(0)
 
     render({ :template => "photos/show" })
-    end
   end
 
   def create
-    the_photo = Photo.new
-    the_photo.caption = params.fetch("query_caption")
-    the_photo.comments_count = 0
-    the_photo.image = params.fetch("query_image")
-    the_photo.likes_count = 0
-    the_photo.owner_id = @current_user.id
+    @photo = Photo.new
+    @photo.caption = params.fetch("query_caption")
+    @photo.image = params.fetch("query_image")
+    @photo.owner_id = @current_user.id
 
-    if the_photo.valid?
-      the_photo.save
+    if @photo.valid?
+      @photo.save
       redirect_to("/photos", { :notice => "Photo created successfully." })
     else
-      redirect_to("/photos", { :alert => the_photo.errors.full_messages.to_sentence })
+      redirect_to("/photos", { :notice => "Photo failed to create successfully." })
     end
   end
 
   def update
     the_id = params.fetch("path_id")
-    the_photo = Photo.where({ :id => the_id }).at(0)
+    @photo = Photo.where({ :id => the_id }).at(0)
 
-    the_photo.caption = params.fetch("query_caption")
-    the_photo.image = params.fetch("query_image")
-    the_photo.owner_id = @current_user.id
-    
+    @photo.caption = params.fetch("query_caption")
+    @photo.image = params.fetch("query_image")
 
-    if the_photo.valid?
-      the_photo.save
-      redirect_to("/photos/#{the_photo.id}", { :notice => "Photo updated successfully."} )
+    if @photo.valid?
+      @photo.save
+      redirect_to("/photos/#{@photo.id}", { :notice => "Photo updated successfully."} )
     else
-      redirect_to("/photos/#{the_photo.id}", { :alert => the_photo.errors.full_messages.to_sentence })
+      redirect_to("/photos/#{@photo.id}", { :alert => "Photo failed to update successfully." })
     end
   end
 
   def destroy
     the_id = params.fetch("path_id")
-    the_photo = Photo.where({ :id => the_id }).at(0)
+    @photo = Photo.where({ :id => the_id }).at(0)
 
-    the_photo.destroy
+    @photo.destroy
 
     redirect_to("/photos", { :notice => "Photo deleted successfully."} )
   end

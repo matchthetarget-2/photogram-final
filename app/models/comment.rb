@@ -2,7 +2,7 @@
 #
 # Table name: comments
 #
-#  id         :bigint           not null, primary key
+#  id         :integer          not null, primary key
 #  body       :text
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -10,10 +10,17 @@
 #  photo_id   :integer
 #
 class Comment < ApplicationRecord
+  validates(:commenter, {:presence => true })
+  validates(:photo, {:presence => true })
 
-  belongs_to(:commenter, **{ :required => true, :class_name => "User", :foreign_key => "author_id" })
+  # def commenter
+  #   return User.where({ :id => self.author_id }).at(0)
+  # end
 
+  # def photo
+  #   return Photo.where({ :id => self.photo_id }).at(0)
+  # end
 
-  belongs_to(:photo, **{ :required => true, :class_name => "Photo", :foreign_key => "photo_id", :counter_cache => true })
-
+  belongs_to :photo, :counter_cache => true
+  belongs_to :commenter, :class_name => "User", :foreign_key => "author_id", :counter_cache => true
 end

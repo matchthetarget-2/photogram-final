@@ -1,80 +1,40 @@
 class FollowRequestsController < ApplicationController
-  def index
-    matching_follow_requests = FollowRequest.all
-
-    @list_of_follow_requests = matching_follow_requests.order({ :created_at => :desc })
-
-    render({ :template => "follow_requests/index" })
-  end
-
-  def show
-    the_id = params.fetch("path_id")
-
-    matching_follow_requests = FollowRequest.where({ :id => the_id })
-
-    @the_follow_request = matching_follow_requests.at(0)
-
-    render({ :template => "follow_requests/show" })
-  end
-
   def create
-    the_follow_request = FollowRequest.new
-    the_follow_request.recipient_id = params.fetch("input_recipient")
-    the_follow_request.sender_id = params.fetch("input_sender")
+    follow_request = FollowRequest.new
+
+    follow_request.recipient_id = params.fetch(:query_recipient_id)
+    follow_request.sender_id = @current_user.id
+
+    recipient = User.where({ :id => follow_request.recipient_id }).at(0)
     
-    
-    if User.where({:id => params.fetch("input_recipient")}).at(0).private == false
-    
-    the_follow_request.status = "accepted"
+    if !recipient.private
+      follow_request.status = "accepted"
     else
-      the_follow_request.status = "pending"
+      follow_request.status = "pending"
     end
 
-    if the_follow_request.valid?
-      the_follow_request.save
-      redirect_to("/users", { :notice => "Follow request created successfully." })
-    else
-      redirect_to("/users", { :alert => the_follow_request.errors.full_messages.to_sentence })
-    end
-  end
+    follow_request.save
 
-  def update
-    the_id = params.fetch("path_id")
-    the_follow_request = FollowRequest.where({ :id => the_id }).at(0)
-
-    the_follow_request.recipient_id = params.fetch("query_recipient_id")
-    the_follow_request.sender_id = params.fetch("query_sender_id")
-    the_follow_request.status = params.fetch("query_status")
-
-    if the_follow_request.valid?
-      the_follow_request.save
-      redirect_to("/users/#{@current_user.username}", { :notice => "Follow request updated successfully."} )
-    else
-      redirect_to("/follow_requests/#{the_follow_request.id}", { :alert => the_follow_request.errors.full_messages.to_sentence })
-    end
+    redirect_to("/users/#{recipient.username}")
   end
 
   def destroy
-    the_id = params.fetch("path_id")
-    the_following_id = FollowRequest.where({ :id => the_id }).at(0).recipient_id
-    the_following_username = User.where({ :id => the_following_id }).at(0).username
-    the_follow_request = FollowRequest.where({ :id => the_id }).at(0)
+    follow_request = FollowRequest.where({ :id => params.fetch(:path_id) }).at(0)
 
-    the_follow_request.destroy
+    follow_request.destroy
 
-    redirect_to("/users/#{the_following_username}", { :notice => "Follow request deleted successfully."} )
+    recipient = User.where({ :id => follow_request.recipient_id }).at(0)
+
+    redirect_to("/users/#{recipient.username}")
   end
 
-  def unfollow
-    the_id = params.fetch("path_id")
-    the_following = FollowRequest.where({ :id => the_id }).at(0).recipient_id
-    the_follow_request = FollowRequest.where({ :id => the_id }).at(0)
+  def update
+    the_id = params.fetch(:path_id)
+    follow_request = FollowRequest.where({ :id => the_id }).at(0)
 
-    the_follow_request.destroy
-
-    redirect_to("/users/#{the_following}")
+    follow_request.status = params.fetch(:query_status)
+    follow_request.save
     
+    redirect_to("/users/#{follow_request.recipient.username}")
   end
-
-
 end
