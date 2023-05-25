@@ -1,0 +1,66 @@
+<h1>List of photos</h1>
+
+<% if @current_user.present? %>
+  <form action="/insert_photo" method="post" class="form-horizontal" enctype="multipart/form-data">
+       
+      <label for="browser_input_image">
+        Image
+      </label>
+
+      <input type="file" id="browser_input_image" name="query_image" placeholder="Enter URL for the image..." class="form-control">
+    
+      <label for="caption_box">
+        Caption
+      </label>
+
+      <textarea id="caption_box" name="query_caption" rows="2" placeholder="Enter a caption for the photo"></textarea>
+    
+    <button>
+      Add photo
+    </button>
+  </form>
+
+<hr>
+
+<% end %>
+
+<table border="1">
+  <tr>
+    <th>Image</th>
+    <th>Caption</th>
+    <th>Owner</th>
+    <th>Posted</th>
+    <th>Likes</th>
+    <th></th>
+  </tr>
+
+  <% @photos.each do |photo| %>
+    <tr>
+      <td>
+        <img src="<%= photo.image %>">
+      </td>
+    
+      <td>
+        <%= photo.caption %>
+      </td>
+    
+      <td>
+        <%= photo.poster.username %>
+      </td>
+    
+      <td>
+        <%= time_ago_in_words(photo.created_at) %> ago
+      </td>
+    
+      <td>
+        <%= photo.likes_count %>
+      </td>
+    
+      <td>
+        <a href="/photos/<%= photo.id %>">
+          Show details
+        </a>
+      </td>
+    </tr>
+  <% end %>
+</table>

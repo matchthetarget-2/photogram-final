@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>VanillaRails7</title>
+    <title>Photogram Final</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -11,6 +11,58 @@
   </head>
 
   <body>
+    <ul>
+      <li>
+        <a href="/users">
+          All users
+        </a>
+      </li>
+
+      <li>
+        <a href="/photos">
+          All public photos
+        </a>
+      </li>
+
+      <% if @current_user.blank? %>
+        <li>
+          <a href="/user_sign_in">
+            Sign in
+          </a>
+        </li>
+
+        <li>
+          <a href="/user_sign_up">
+            Sign up
+          </a>
+        </li>
+      <% else %>
+        <li>
+          <a href="/edit_user_profile">
+            <%= @current_user.username %>
+          </a>
+        </li>
+
+        <li>
+          <a href="/user_sign_out">
+            Sign out
+          </a>
+        </li>
+      <% end %>
+    </ul>
+
+    <% if notice.present? %>
+      <div>
+        <%= notice %>
+      </div>
+    <% end %>
+
+    <% if alert.present? %>
+      <div>
+        <%= alert %>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
