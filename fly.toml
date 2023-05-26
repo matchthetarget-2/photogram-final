@@ -7,9 +7,6 @@ mounts = []
 primary_region = "ord"
 processes = []
 
-[deploy]
-  release_command = "chmod -R a+rw rails/public/"
-
 [[services]]
   internal_port = 3000
   processes = ["app"]
