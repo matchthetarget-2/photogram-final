@@ -2,10 +2,10 @@
 #
 # Table name: users
 #
-#  id              :integer          not null, primary key
-#  comments_count  :integer          default("0")
+#  id              :bigint           not null, primary key
+#  comments_count  :integer
 #  email           :string
-#  likes_count     :integer          default("0")
+#  likes_count     :integer
 #  password_digest :string
 #  private         :boolean
 #  username        :string
