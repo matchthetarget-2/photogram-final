@@ -109,3 +109,6 @@ end
 
 gem "carrierwave"
 gem "cloudinary"
+
+# cron job for sample_data with whenever
+gem "whenever", require: false
