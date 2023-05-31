@@ -9,7 +9,7 @@ processes = []
 
 [[services]]
   internal_port = 3000
-  processes = ["app"]
+  processes = ["web"]
   protocol = "tcp"
   [services.concurrency]
     hard_limit = 25
@@ -28,3 +28,9 @@ processes = []
 [[statics]]
   guest_path = "/rails/public"
   url_prefix = "/"
+
+[processes]
+  # The command below is used to launch a Rails server; be sure to
+  # replace with the command you're using to launch your server.
+  web = "./bin/rails server"
+  cron = "supercronic /rails/crontab"
